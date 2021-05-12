@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <title>{% block title %}Filmotéka{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Add additional CSS in static file -->
+    {% load static %}
+    {% block css %}
+    {% load bootstrap_pagination %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+    {% block header %}
+        {% include "page/header.html" %}
+    {% endblock %}
+    </header>
+    <nav class="navbar navbar-expand-md bg-info navbar-dark">
+      <!-- Brand -->
+      <a class="navbar-brand text-body" href="#">NAP</a>
+
+      <!-- Toggler/collapsibe Button -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'index' %}">Úvodní stránka</a>
+          </li>
+        </ul>
+      </div>
+        <div class="row mt-1">
+            <div class="col-sm-12">
+                <h5 class="text-white">{{ nazev_poctu }} {{ number }}</h5>
+            </div>
+        </div>
+    </nav>
+    <main class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-12 bg-danger">
+                <h2 class="display-4 text-center">{{ nazev }}</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for kocka in cats_photo %}
+            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 d-flex">
+                <div class="card">
+                    {% if kocka.fotka %}
+                    <img class="card-img-top" src="/media/{{ kocka.fotka }}" alt="{{ kocka.nazev_fotky }}">
+
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">{{ kocka.jmeno }}</h4>
+                        <h5 class="card-text">Druh: {{ kocka.druh }}</h5>
+                        <h5 class="card-text">Roky: {{ kocka.vek }} Váha: {{ kocka.vaha }}</h5>
+                        <p class="card-text">Popisek: {{ kocka.popisek }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if is_paginated %}
+        <div class="row mt-5">
+            <div class="col-12">
+            {% bootstrap_paginate page_obj range=10 %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+    <footer class="container-fluid">
+    {% block footer %}
+        {% include "page/footer.html" %}
+    {% endblock %}
+    </footer>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
